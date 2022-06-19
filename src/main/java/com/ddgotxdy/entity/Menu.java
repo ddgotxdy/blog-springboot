@@ -1,33 +1,31 @@
 package com.ddgotxdy.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
- * <p>
- * 
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: admin前端菜单
  */
 @Getter
 @Setter
 @TableName("tb_menu")
-@ApiModel(value = "Menu对象", description = "")
+@ApiModel(value = "Menu对象", description = "admin前端菜单")
 public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键")
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     @ApiModelProperty("菜单名")
@@ -43,9 +41,11 @@ public class Menu implements Serializable {
     private String icon;
 
     @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
     @ApiModelProperty("排序")

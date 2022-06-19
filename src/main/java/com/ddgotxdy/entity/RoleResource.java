@@ -10,17 +10,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 角色资源权限
  */
 @Getter
 @Setter
 @TableName("tb_role_resource")
-@ApiModel(value = "RoleResource对象", description = "")
+@ApiModel(value = "RoleResource对象", description = "角色资源权限")
 public class RoleResource implements Serializable {
 
     private static final long serialVersionUID = 1L;

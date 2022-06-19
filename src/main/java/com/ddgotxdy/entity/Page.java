@@ -1,8 +1,7 @@
 package com.ddgotxdy.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
@@ -11,17 +10,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 页面
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 页面修改
  */
 @Getter
 @Setter
 @TableName("tb_page")
-@ApiModel(value = "Page对象", description = "页面")
+@ApiModel(value = "Page对象", description = "页面修改")
 public class Page implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,9 +35,11 @@ public class Page implements Serializable {
     private String pageCover;
 
     @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
 

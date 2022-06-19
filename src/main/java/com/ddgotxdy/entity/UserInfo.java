@@ -1,8 +1,7 @@
 package com.ddgotxdy.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
@@ -11,23 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 用户基本信息
  */
 @Getter
 @Setter
 @TableName("tb_user_info")
-@ApiModel(value = "UserInfo对象", description = "")
+@ApiModel(value = "UserInfo对象", description = "用户基本信息")
 public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("用户ID")
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     @ApiModelProperty("邮箱号")
@@ -49,9 +44,11 @@ public class UserInfo implements Serializable {
     private Boolean isDisable;
 
     @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
 

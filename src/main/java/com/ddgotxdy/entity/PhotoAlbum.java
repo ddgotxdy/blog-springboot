@@ -1,8 +1,7 @@
 package com.ddgotxdy.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
@@ -11,12 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 相册
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 相册
  */
 @Getter
 @Setter
@@ -27,7 +22,7 @@ public class PhotoAlbum implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键")
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     @ApiModelProperty("相册名")
@@ -40,15 +35,18 @@ public class PhotoAlbum implements Serializable {
     private String albumCover;
 
     @ApiModelProperty("是否删除")
+    @TableLogic
     private Boolean isDelete;
 
     @ApiModelProperty("状态值 1公开 2私密")
     private Boolean status;
 
     @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
 

@@ -10,23 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 角色对应的菜单权限
  */
 @Getter
 @Setter
 @TableName("tb_role_menu")
-@ApiModel(value = "RoleMenu对象", description = "")
+@ApiModel(value = "RoleMenu对象", description = "角色对应的菜单权限")
 public class RoleMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键")
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     @ApiModelProperty("角色id")

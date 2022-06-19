@@ -1,8 +1,7 @@
 package com.ddgotxdy.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
@@ -11,23 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 日志记录
  */
 @Getter
 @Setter
 @TableName("tb_operation_log")
-@ApiModel(value = "OperationLog对象", description = "")
+@ApiModel(value = "OperationLog对象", description = "日志记录")
 public class OperationLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键id")
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     @ApiModelProperty("操作模块")
@@ -67,9 +62,11 @@ public class OperationLog implements Serializable {
     private String ipSource;
 
     @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
 
