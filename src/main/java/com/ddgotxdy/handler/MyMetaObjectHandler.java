@@ -10,6 +10,10 @@ import java.time.ZoneId;
 
 import static com.ddgotxdy.enums.ZoneEnum.SHANGHAI;
 
+/**
+ * @author: ddgo
+ * @description: 自动填充插入和更新事件
+ */
 @Log4j2
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
