@@ -1,16 +1,14 @@
 package com.ddgotxdy.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 文章控制器
  */
+@Api(tags = "文章模块")
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
