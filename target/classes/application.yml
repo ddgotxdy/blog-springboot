@@ -1,9 +1,13 @@
 # 配置端口
 server:
-  port: 8080
+  port: 8888
 
 # 配置mysql数据库
 spring:
+  # 解决高版本springboot 导致swagger不兼容
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver

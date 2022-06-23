@@ -26,7 +26,7 @@ public class Knife4jConfig {
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .protocols(Collections.singleton("https"))
-                .host("https://www.ddgotxdy.com")
+                .host("localhost:8888")
                 .apiInfo(apiInfo())
                 // 需要选择生成接口的包路径
                 .select()
