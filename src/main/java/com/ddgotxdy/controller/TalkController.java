@@ -1,6 +1,8 @@
 package com.ddgotxdy.controller;
 
+import com.ddgotxdy.dto.TalkDTO;
 import com.ddgotxdy.service.ITalkService;
+import com.ddgotxdy.vo.PageResult;
 import com.ddgotxdy.vo.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,17 @@ public class TalkController {
     @GetMapping("/home")
     public Result<List<String>> listHomeTalks() {
         return Result.ok(talkService.listHomeTalks());
+    }
+
+    /**
+     * 查看说说列表
+     *
+     * @return {@link Result<TalkDTO>}
+     */
+    @ApiOperation(value = "查看说说列表")
+    @GetMapping
+    public Result<PageResult<TalkDTO>> listTalks() {
+        return Result.ok(talkService.listTalks());
     }
 
 }

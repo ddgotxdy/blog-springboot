@@ -10,11 +10,9 @@ import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -22,8 +20,8 @@ import java.util.stream.Collectors;
  * @author: ddgo
  * @description: Redis 操作的工具类
  */
+@Component
 public class RedisUtil {
-    private RedisUtil(){};
 
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
