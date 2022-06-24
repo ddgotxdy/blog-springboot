@@ -4,6 +4,7 @@ import com.ddgotxdy.dto.TalkDTO;
 import com.ddgotxdy.service.ITalkService;
 import com.ddgotxdy.vo.PageResult;
 import com.ddgotxdy.vo.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author ddgo
  * @description: 说说控制器
  */
+@Api("说说模块")
 @RestController
 @RequestMapping("/talks")
 public class TalkController {

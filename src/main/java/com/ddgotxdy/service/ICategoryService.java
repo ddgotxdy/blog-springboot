@@ -1,16 +1,20 @@
 package com.ddgotxdy.service;
 
+import com.ddgotxdy.dto.CategoryDTO;
 import com.ddgotxdy.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ddgotxdy.vo.PageResult;
 
 /**
- * <p>
- *  服务类
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 分类服务类
  */
 public interface ICategoryService extends IService<Category> {
 
+    /**
+     * 查询分类列表
+     *
+     * @return 分类列表
+     */
+    PageResult<CategoryDTO> listCategories();
 }
