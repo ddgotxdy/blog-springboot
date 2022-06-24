@@ -281,7 +281,11 @@ public class RedisUtil {
      * @return {@link Double}
      */
     public Double zScore(String key, Object value) {
-        return redisTemplate.opsForZSet().score(key, value);
+        Double score = redisTemplate.opsForZSet().score(key, value);
+        if(Objects.isNull(score)) {
+            score = 0D;
+        }
+        return score;
     }
 
     /**
