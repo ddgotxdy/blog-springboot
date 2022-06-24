@@ -34,6 +34,10 @@ public interface ITalkService extends IService<Talk> {
      */
     TalkDTO getTalkById(Integer talkId);
 
-
-
+    /**
+     * 点赞说说
+     *
+     * @param talkId 说说id
+     */
+    void saveTalkLike(Integer talkId);
 }

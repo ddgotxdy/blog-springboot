@@ -30,8 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.ddgotxdy.constant.RedisPrefixConst.TALK_COMMENT_COUNT;
-import static com.ddgotxdy.constant.RedisPrefixConst.TALK_LIKE_COUNT;
+import static com.ddgotxdy.constant.RedisPrefixConst.*;
 import static com.ddgotxdy.enums.TalkStatusEnum.PUBLIC;
 
 /**
@@ -94,6 +93,23 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements IT
             throw new ServerException("说说不存在");
         }
         return getTalkDTO(talk);
+    }
+
+    @Override
+    public void saveTalkLike(Integer talkId) {
+        // 判断是否点赞 TODO 用户id需要更改
+        String talkLikeKey = TALK_USER_LIKE + 1;
+        if (redisUtil.sIsMember(talkLikeKey, talkId)) {
+            // 点过赞则删除说说id
+            redisUtil.sRemove(talkLikeKey, talkId);
+            // 说说点赞量-1
+            redisUtil.hDecr(TALK_LIKE_COUNT, talkId.toString(), 1L);
+        } else {
+            // 未点赞则增加说说id
+            redisUtil.sAdd(talkLikeKey, talkId);
+            // 说说点赞量+1
+            redisUtil.hIncr(TALK_LIKE_COUNT, talkId.toString(), 1L);
+        }
     }
 
     /**
