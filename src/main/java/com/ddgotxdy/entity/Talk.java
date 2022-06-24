@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -36,10 +37,10 @@ public class Talk implements Serializable {
     private String images;
 
     @ApiModelProperty("是否置顶")
-    private Boolean isTop;
+    private Integer isTop;
 
     @ApiModelProperty("状态 1.公开 2.私密")
-    private Boolean status;
+    private Integer status;
 
     @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)

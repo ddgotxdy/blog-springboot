@@ -41,11 +41,11 @@ import static com.ddgotxdy.enums.TalkStatusEnum.PUBLIC;
 public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements ITalkService {
 
     @Resource
-    TalkMapper talkMapper;
+    private TalkMapper talkMapper;
     @Resource
-    UserInfoMapper userInfoMapper;
+    private UserInfoMapper userInfoMapper;
     @Autowired
-    RedisUtil redisUtil;
+    private RedisUtil redisUtil;
 
     @Override
     public List<String> listHomeTalks() {

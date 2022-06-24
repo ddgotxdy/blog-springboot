@@ -40,20 +40,20 @@ public class Article implements Serializable {
     private String articleContent;
 
     @ApiModelProperty("文章类型 1原创 2转载 3翻译")
-    private Boolean type;
+    private Integer type;
 
     @ApiModelProperty("原文链接")
     private String originalUrl;
 
     @ApiModelProperty("是否置顶 0否 1是")
-    private Boolean isTop;
+    private Integer isTop;
 
     @ApiModelProperty("是否删除  0否 1是")
     @TableLogic
     private Boolean isDelete;
 
     @ApiModelProperty("状态值 1公开 2私密 3评论可见")
-    private Boolean status;
+    private Integer status;
 
     @ApiModelProperty("发表时间")
     @TableField(fill = FieldFill.INSERT)

@@ -22,7 +22,7 @@ import java.util.List;
 public class TalkController {
 
     @Autowired
-    ITalkService talkService;
+    private ITalkService talkService;
 
     /**
      * 查看首页说说
