@@ -9,6 +9,7 @@ import com.ddgotxdy.dto.CommentCountDTO;
 import com.ddgotxdy.dto.TalkDTO;
 import com.ddgotxdy.entity.Talk;
 import com.ddgotxdy.entity.UserInfo;
+import com.ddgotxdy.exception.ServerException;
 import com.ddgotxdy.mapper.CommentMapper;
 import com.ddgotxdy.mapper.TalkMapper;
 import com.ddgotxdy.mapper.UserInfoMapper;
@@ -81,45 +82,52 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements IT
         List<Talk> talkList = iPage.getRecords();
         List<TalkDTO> talkDTOList = new ArrayList<>();
         talkList.forEach(item ->{
-            TalkDTO talkDTO = new TalkDTO();
-            BeanUtils.copyProperties(item, talkDTO);
-            // 查询发表说说的用户头像名称
-            LambdaQueryWrapper<UserInfo> userInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            userInfoLambdaQueryWrapper.eq(UserInfo::getId, item.getUserId());
-            UserInfo userInfo = userInfoMapper.selectOne(userInfoLambdaQueryWrapper);
-            talkDTO.setAvatar(userInfo.getAvatar());
-            talkDTO.setNickname(userInfo.getNickname());
-
-            talkDTOList.add(talkDTO);
+            talkDTOList.add(getTalkDTO(item));
         });
-
-        // 查询说说评论量
-        Map<String, Object> commentCountMap = redisUtil.hGetAll(TALK_COMMENT_COUNT);
-        // 查询说说点赞量
-        Map<String, Object> likeCountMap = redisUtil.hGetAll(TALK_LIKE_COUNT);
-
-        talkDTOList.forEach(item -> {
-            // 喜欢的数字处理
-            Object likeCount = likeCountMap.get(item.getId().toString());
-            if(Objects.nonNull(likeCount)) {
-                item.setLikeCount((Integer) likeCount);
-            } else {
-                item.setLikeCount(0);
-            }
-
-            Object CommentCount = commentCountMap.get(item.getId().toString());
-            if(Objects.nonNull(CommentCount)) {
-                item.setCommentCount((Integer) CommentCount);
-            } else {
-                item.setCommentCount(0);
-            }
-
-            // 转换图片格式
-            if (Objects.nonNull(item.getImages())) {
-                item.setImgList(CommonUtil.castList(JSON.parseObject(item.getImages(), List.class), String.class));
-            }
-        });
-
         return new PageResult<>(talkDTOList, iPage.getTotal());
+    }
+
+    @Override
+    public TalkDTO getTalkById(Integer talkId) {
+        Talk talk = talkMapper.selectById(talkId);
+        if (Objects.isNull(talk)) {
+            throw new ServerException("说说不存在");
+        }
+        return getTalkDTO(talk);
+    }
+
+    /**
+     * talk 2 talkDTO
+     * @param talk 说说对象
+     * @return TalkDTO
+     */
+    private TalkDTO getTalkDTO(Talk talk) {
+        TalkDTO talkDTO = new TalkDTO();
+        BeanUtils.copyProperties(talk, talkDTO);
+        // 查询发表说说的用户头像名称
+        UserInfo userInfo = userInfoMapper.selectById(talk.getUserId());
+        talkDTO.setAvatar(userInfo.getAvatar());
+        talkDTO.setNickname(userInfo.getNickname());
+
+        // 查询说说点赞量
+        Object likeCount = redisUtil.hGet(TALK_COMMENT_COUNT, talk.getId().toString());
+        if(Objects.nonNull(likeCount)) {
+            talkDTO.setLikeCount((Integer) likeCount);
+        } else {
+            talkDTO.setLikeCount(0);
+        }
+
+        // 评论量处理
+        Object commentCount = redisUtil.hGet(TALK_LIKE_COUNT, talk.getId().toString());
+        if(Objects.nonNull(commentCount)) {
+            talkDTO.setCommentCount((Integer) commentCount);
+        } else {
+            talkDTO.setCommentCount(0);
+        }
+        // 转换图片格式
+        if (Objects.nonNull(talkDTO.getImages())) {
+            talkDTO.setImgList(CommonUtil.castList(JSON.parseObject(talkDTO.getImages(), List.class), String.class));
+        }
+        return talkDTO;
     }
 }

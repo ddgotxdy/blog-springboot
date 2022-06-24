@@ -25,4 +25,15 @@ public interface ITalkService extends IService<Talk> {
      * @return {@link PageResult<TalkDTO>} 说说列表
      */
     PageResult<TalkDTO> listTalks();
+
+    /**
+     * 根据id查看说说
+     *
+     * @param talkId 说说id
+     * @return {@link TalkDTO} 说说信息
+     */
+    TalkDTO getTalkById(Integer talkId);
+
+
+
 }

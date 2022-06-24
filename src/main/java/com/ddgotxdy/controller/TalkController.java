@@ -4,9 +4,11 @@ import com.ddgotxdy.dto.TalkDTO;
 import com.ddgotxdy.service.ITalkService;
 import com.ddgotxdy.vo.PageResult;
 import com.ddgotxdy.vo.Result;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +44,19 @@ public class TalkController {
     @GetMapping
     public Result<PageResult<TalkDTO>> listTalks() {
         return Result.ok(talkService.listTalks());
+    }
+
+    /**
+     * 根据id查看说说
+     *
+     * @param talkId 说说id
+     * @return {@link Result<TalkDTO>}
+     */
+    @ApiOperation(value = "根据id查看说说")
+    @ApiImplicitParam(name = "talkId", value = "说说id", required = true, dataType = "Integer")
+    @GetMapping("/talks/{talkId}")
+    public Result<TalkDTO> getTalkById(@PathVariable("talkId") Integer talkId) {
+        return Result.ok(talkService.getTalkById(talkId));
     }
 
 }
