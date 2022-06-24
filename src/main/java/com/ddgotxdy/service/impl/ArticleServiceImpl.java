@@ -2,6 +2,7 @@ package com.ddgotxdy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ddgotxdy.dto.ArchiveDTO;
 import com.ddgotxdy.dto.ArticleHomeDTO;
 import com.ddgotxdy.dto.TagDTO;
 import com.ddgotxdy.entity.Article;
@@ -13,13 +14,17 @@ import com.ddgotxdy.mapper.CategoryMapper;
 import com.ddgotxdy.mapper.TagMapper;
 import com.ddgotxdy.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ddgotxdy.util.BeanCopyUtil;
 import com.ddgotxdy.util.PageUtil;
+import com.ddgotxdy.vo.PageResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ddgotxdy.enums.TalkStatusEnum.PUBLIC;
 
 /**
  * @author ddgo
@@ -70,5 +75,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleHomeDTOList.add(articleHomeDTO);
         });
         return articleHomeDTOList;
+    }
+
+    @Override
+    public PageResult<ArchiveDTO> listArchives() {
+        Page<Article> page = new Page<>(PageUtil.getCurrent(), PageUtil.getSize());
+        // 获取分页数据
+        Page<Article> articlePage = articleMapper.selectPage(page, new LambdaQueryWrapper<Article>()
+                .select(Article::getId, Article::getArticleTitle, Article::getCreateTime)
+                // 按照发布时间降序
+                .orderByDesc(Article::getCreateTime)
+                // 必须是公开的数据
+                .eq(Article::getStatus, PUBLIC.getStatus()));
+        List<ArchiveDTO> archiveDTOList = BeanCopyUtil.copyList(articlePage.getRecords(), ArchiveDTO.class);
+        return new PageResult<>(archiveDTOList, articlePage.getTotal());
     }
 }

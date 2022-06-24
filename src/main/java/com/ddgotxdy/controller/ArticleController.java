@@ -1,7 +1,9 @@
 package com.ddgotxdy.controller;
 
+import com.ddgotxdy.dto.ArchiveDTO;
 import com.ddgotxdy.dto.ArticleHomeDTO;
 import com.ddgotxdy.service.IArticleService;
+import com.ddgotxdy.vo.PageResult;
 import com.ddgotxdy.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,4 +36,16 @@ public class ArticleController {
     public Result<List<ArticleHomeDTO>> listArticles() {
         return Result.ok(articleService.listArticles());
     }
+
+    /**
+     * 查看文章归档
+     *
+     * @return {@link Result<ArchiveDTO>} 文章归档列表
+     */
+    @ApiOperation(value = "查看文章归档")
+    @GetMapping("/articles/archives")
+    public Result<PageResult<ArchiveDTO>> listArchives() {
+        return Result.ok(articleService.listArchives());
+    }
+
 }
