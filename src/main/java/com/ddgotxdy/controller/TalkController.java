@@ -16,7 +16,7 @@ import java.util.List;
  * @author ddgo
  * @description: 说说控制器
  */
-@Api("说说模块")
+@Api(tags = "说说模块")
 @RestController
 @RequestMapping("/talks")
 public class TalkController {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ddgo
  * @description: 分类控制器
  */
-@Api("分类模块")
+@Api(tags = "分类模块")
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
