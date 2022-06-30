@@ -2,6 +2,7 @@ package com.ddgotxdy.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.ddgotxdy.dto.BlogHomeInfoDTO;
 import com.ddgotxdy.entity.Article;
 import com.ddgotxdy.mapper.ArticleMapper;
@@ -10,19 +11,24 @@ import com.ddgotxdy.mapper.TagMapper;
 import com.ddgotxdy.mapper.WebsiteConfigMapper;
 import com.ddgotxdy.service.BlogInfoService;
 import com.ddgotxdy.service.IPageService;
+import com.ddgotxdy.util.IpUtil;
 import com.ddgotxdy.util.RedisUtil;
 import com.ddgotxdy.vo.PageVO;
 import com.ddgotxdy.vo.WebsiteConfigVO;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.ddgotxdy.constant.CommonConst.DEFAULT_CONFIG_ID;
-import static com.ddgotxdy.constant.CommonConst.FALSE;
+import static com.ddgotxdy.constant.CommonConst.*;
 import static com.ddgotxdy.constant.RedisPrefixConst.*;
 import static com.ddgotxdy.enums.TalkStatusEnum.PUBLIC;
 
@@ -41,6 +47,8 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     private TagMapper tagMapper;
     @Resource
     private WebsiteConfigMapper websiteConfigMapper;
+    @Resource
+    private HttpServletRequest request;
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
@@ -78,6 +86,36 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     public String getAbout() {
         Object value = redisUtil.get(ABOUT);
         return Objects.nonNull(value) ? value.toString() : "";
+    }
+
+    @Override
+    public void report() {
+        // 获取ip
+        String ipAddress = IpUtil.getIpAddress(request);
+        // 获取访问设备
+        UserAgent userAgent = IpUtil.getUserAgent(request);
+        Browser browser = userAgent.getBrowser();
+        OperatingSystem operatingSystem = userAgent.getOperatingSystem();
+        // 生成唯一用户标识
+        String uuid = ipAddress + browser.getName() + operatingSystem.getName();
+        String md5 = DigestUtils.md5DigestAsHex(uuid.getBytes());
+        // 判断是否访问
+        if (!redisUtil.sIsMember(UNIQUE_VISITOR, md5)) {
+            // 统计游客地域分布
+            String ipSource = IpUtil.getIpSource(ipAddress);
+            if (StringUtils.isNotBlank(ipSource)) {
+                ipSource = ipSource.substring(0, 2)
+                        .replaceAll(PROVINCE, "")
+                        .replaceAll(CITY, "");
+                redisUtil.hIncr(VISITOR_AREA, ipSource, 1L);
+            } else {
+                redisUtil.hIncr(VISITOR_AREA, UNKNOWN, 1L);
+            }
+            // 访问量+1
+            redisUtil.incr(BLOG_VIEWS_COUNT, 1);
+            // 保存唯一标识
+            redisUtil.sAdd(UNIQUE_VISITOR, md5);
+        }
     }
 
     private WebsiteConfigVO getWebsiteConfig() {

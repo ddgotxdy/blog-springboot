@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -40,6 +41,17 @@ public class BlogInfoController {
     @GetMapping("/about")
     public Result<String> getAbout() {
         return Result.ok(blogInfoService.getAbout());
+    }
+
+    /**
+     * 上传访客信息
+     *
+     * @return {@link Result}
+     */
+    @PostMapping("/report")
+    public Result<?> report() {
+        blogInfoService.report();
+        return Result.ok();
     }
 
 }

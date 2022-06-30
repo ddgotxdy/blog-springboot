@@ -20,4 +20,9 @@ public interface BlogInfoService {
      * @return 关于我内容
      */
     String getAbout();
+
+    /**
+     * 上传访客信息
+     */
+    void report();
 }
