@@ -145,7 +145,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleDTO.setLikeCount((Integer) redisUtil.hGet(ARTICLE_LIKE_COUNT, articleId.toString()));
 
         // 封装文章信息
-        articleDTO.setRecommendArticleList(null);
+        articleDTO.setRecommendArticleList(new ArrayList<>());
         articleDTO.setNewestArticleList(articleRecommendDTOList);
 
         return articleDTO;
