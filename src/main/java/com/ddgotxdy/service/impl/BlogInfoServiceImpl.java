@@ -118,7 +118,8 @@ public class BlogInfoServiceImpl implements BlogInfoService {
         }
     }
 
-    private WebsiteConfigVO getWebsiteConfig() {
+    @Override
+    public WebsiteConfigVO getWebsiteConfig() {
         WebsiteConfigVO websiteConfigVO;
         // 获取缓存数据
         Object websiteConfig = redisUtil.get(WEBSITE_CONFIG);

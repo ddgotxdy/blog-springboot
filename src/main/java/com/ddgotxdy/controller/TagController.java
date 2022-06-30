@@ -27,7 +27,7 @@ public class TagController {
      * @return {@link Result<TagDTO>} 标签列表
      */
     @ApiOperation(value = "查询标签列表")
-    @GetMapping("/tags")
+    @GetMapping
     public Result<PageResult<TagDTO>> listTags() {
         return Result.ok(tagService.listTags());
     }

@@ -1,6 +1,7 @@
 package com.ddgotxdy.service;
 
 import com.ddgotxdy.dto.BlogHomeInfoDTO;
+import com.ddgotxdy.vo.WebsiteConfigVO;
 
 /**
  * @author: ddgo
@@ -25,4 +26,12 @@ public interface BlogInfoService {
      * 上传访客信息
      */
     void report();
+
+    /**
+     * 获取网站配置
+     *
+     * @return {@link WebsiteConfigVO} 网站配置
+     */
+    WebsiteConfigVO getWebsiteConfig();
+
 }

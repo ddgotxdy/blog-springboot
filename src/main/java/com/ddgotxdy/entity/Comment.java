@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,7 +49,7 @@ public class Comment implements Serializable {
     private Integer isDelete;
 
     @ApiModelProperty("是否审核")
-    private Boolean isReview;
+    private Integer isReview;
 
     @ApiModelProperty("评论时间")
     @TableField(fill = FieldFill.INSERT)
