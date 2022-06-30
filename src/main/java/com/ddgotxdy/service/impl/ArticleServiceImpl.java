@@ -2,17 +2,13 @@ package com.ddgotxdy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ddgotxdy.dto.*;
 import com.ddgotxdy.entity.Article;
-import com.ddgotxdy.entity.ArticleTag;
-import com.ddgotxdy.entity.Tag;
 import com.ddgotxdy.exception.ServerException;
 import com.ddgotxdy.mapper.ArticleMapper;
-import com.ddgotxdy.mapper.ArticleTagMapper;
 import com.ddgotxdy.mapper.CategoryMapper;
-import com.ddgotxdy.mapper.TagMapper;
 import com.ddgotxdy.service.IArticleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ddgotxdy.service.ITagService;
 import com.ddgotxdy.util.BeanCopyUtil;
 import com.ddgotxdy.util.CommonUtil;
@@ -27,11 +23,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 import static com.ddgotxdy.constant.CommonConst.ARTICLE_SET;
-import static com.ddgotxdy.constant.RedisPrefixConst.ARTICLE_LIKE_COUNT;
-import static com.ddgotxdy.constant.RedisPrefixConst.ARTICLE_VIEWS_COUNT;
+import static com.ddgotxdy.constant.RedisPrefixConst.*;
 import static com.ddgotxdy.enums.TalkStatusEnum.PUBLIC;
 
 /**
@@ -155,6 +149,23 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleDTO.setNewestArticleList(articleRecommendDTOList);
 
         return articleDTO;
+    }
+
+    @Override
+    public void saveArticleLike(Integer articleId) {
+        // 判断是否点赞 TODO 换为当前用户id
+        String articleLikeKey = ARTICLE_USER_LIKE + 1;
+        if (redisUtil.sIsMember(articleLikeKey, articleId)) {
+            // 点过赞则删除文章id
+            redisUtil.sRemove(articleLikeKey, articleId);
+            // 文章点赞量-1
+            redisUtil.hDecr(ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
+        } else {
+            // 未点赞则增加文章id
+            redisUtil.sAdd(articleLikeKey, articleId);
+            // 文章点赞量+1
+            redisUtil.hIncr(ARTICLE_LIKE_COUNT, articleId.toString(), 1L);
+        }
     }
 
 

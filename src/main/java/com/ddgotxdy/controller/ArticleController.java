@@ -12,10 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -76,6 +73,20 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public Result<ArticleDTO> getArticleById(@PathVariable("articleId") Integer articleId) {
         return Result.ok(articleService.getArticleById(articleId));
+    }
+
+    /**
+     * 点赞文章
+     *
+     * @param articleId 文章id
+     * @return {@link Result<>}
+     */
+    @ApiOperation(value = "点赞文章")
+    @ApiImplicitParam(name = "articleId", value = "文章id", required = true, dataType = "Integer")
+    @PostMapping("/{articleId}/like")
+    public Result<?> saveArticleLike(@PathVariable("articleId") Integer articleId) {
+        articleService.saveArticleLike(articleId);
+        return Result.ok();
     }
 
 }

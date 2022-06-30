@@ -1,11 +1,11 @@
 package com.ddgotxdy.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ddgotxdy.dto.ArchiveDTO;
 import com.ddgotxdy.dto.ArticleDTO;
 import com.ddgotxdy.dto.ArticleHomeDTO;
 import com.ddgotxdy.dto.ArticlePreviewListDTO;
 import com.ddgotxdy.entity.Article;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.ddgotxdy.vo.ConditionVO;
 import com.ddgotxdy.vo.PageResult;
 
@@ -45,4 +45,10 @@ public interface IArticleService extends IService<Article> {
      * @return 文章信息
      */
     ArticleDTO getArticleById(Integer articleId);
+
+    /**
+     * 保存文章点赞
+     * @param articleId 文章id
+     */
+    void saveArticleLike(Integer articleId);
 }
