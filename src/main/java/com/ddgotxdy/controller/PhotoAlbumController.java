@@ -1,18 +1,17 @@
 package com.ddgotxdy.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 相册 前端控制器
- * </p>
- *
  * @author ddgo
- * @since 2022-06-19
+ * @description: 相册控制器
  */
-@Controller
-@RequestMapping("/photoAlbum")
+@Api(tags = "相册模块")
+@RestController
+@RequestMapping("/albums")
 public class PhotoAlbumController {
 
 }
