@@ -1,6 +1,7 @@
 package com.ddgotxdy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ddgotxdy.dto.TagDTO;
 import com.ddgotxdy.entity.ArticleTag;
 import com.ddgotxdy.entity.Tag;
@@ -8,6 +9,9 @@ import com.ddgotxdy.mapper.ArticleTagMapper;
 import com.ddgotxdy.mapper.TagMapper;
 import com.ddgotxdy.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ddgotxdy.util.BeanCopyUtil;
+import com.ddgotxdy.util.PageUtil;
+import com.ddgotxdy.vo.PageResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +45,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
             tagDTOList.add(tagDTO);
         });
         return tagDTOList;
+    }
+
+    @Override
+    public PageResult<TagDTO> listTags() {
+        // 封装page
+        Page<Tag> page = new Page<>(PageUtil.getCurrent(), PageUtil.getSize());
+        // 获得page信息
+        Page<Tag> tagPage = tagMapper.selectPage(page, null);
+        List<Tag> tagList = tagPage.getRecords();
+        // 转换为DTO
+        List<TagDTO> tagDTOList = BeanCopyUtil.copyList(tagList, TagDTO.class);
+        return new PageResult<>(tagDTOList, tagPage.getTotal());
     }
 }
