@@ -14,4 +14,10 @@ public interface BlogInfoService {
      */
     BlogHomeInfoDTO getBlogHomeInfo();
 
+    /**
+     * 获取关于我内容
+     *
+     * @return 关于我内容
+     */
+    String getAbout();
 }

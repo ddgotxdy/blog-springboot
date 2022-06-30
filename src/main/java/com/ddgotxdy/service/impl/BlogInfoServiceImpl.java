@@ -23,8 +23,7 @@ import java.util.Optional;
 
 import static com.ddgotxdy.constant.CommonConst.DEFAULT_CONFIG_ID;
 import static com.ddgotxdy.constant.CommonConst.FALSE;
-import static com.ddgotxdy.constant.RedisPrefixConst.BLOG_VIEWS_COUNT;
-import static com.ddgotxdy.constant.RedisPrefixConst.WEBSITE_CONFIG;
+import static com.ddgotxdy.constant.RedisPrefixConst.*;
 import static com.ddgotxdy.enums.TalkStatusEnum.PUBLIC;
 
 /**
@@ -73,6 +72,12 @@ public class BlogInfoServiceImpl implements BlogInfoService {
                 .websiteConfig(websiteConfig)
                 .pageList(pageVOList)
                 .build();
+    }
+
+    @Override
+    public String getAbout() {
+        Object value = redisUtil.get(ABOUT);
+        return Objects.nonNull(value) ? value.toString() : "";
     }
 
     private WebsiteConfigVO getWebsiteConfig() {
